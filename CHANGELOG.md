@@ -2,6 +2,9 @@
 
 # 5.25.0
   - Changes from 5.24.0
+    - Features:
+      - ADDED: a new `ways` subsection in the `annotations` section containing way IDs along the found path, with sign meaning direction [#5325](https://github.com/Project-OSRM/osrm-backend/issues/5325)
+      - ADDED: a new `info` subsection in the `annotations` section containing segment's information.
     - Build:
       - CHANGED: Node binaries now use Github Releases for hosting [#6030](https://github.com/Project-OSRM/osrm-backend/pull/6030)
     - Misc:
