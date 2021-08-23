@@ -503,7 +503,27 @@ class RouteAPI : public BaseAPI
                 nodes.emplace_back(static_cast<uint64_t>(node_id));
             }
         }
+        std::vector<int64_t> ways;
+        std::vector<int64_t>info;
+        if (requested_annotations & RouteParameters::AnnotationsType::Ways)
+        {
+            ways.reserve(leg_geometry.osm_node_ids.size());
+//             for (const auto way_id : leg_geometry.osm_way_ids)
+//             {
+//                 ways.emplace_back(static_cast<int64_t>(way_id));
+//             }
+        }
+        if (requested_annotations & RouteParameters::AnnotationsType::Info)
+        {
+            info.reserve(leg_geometry.osm_node_ids.size());
+//             for (const auto way_id : leg_geometry.osm_way_ids)
+//             {
+//                 ways.emplace_back(static_cast<int64_t>(way_id));
+//             }
+        }
         auto nodes_vector = fb_result.CreateVector(nodes);
+        auto ways_vector = fb_result.CreateVector(ways);
+        auto info_vector = fb_result.CreateVector(info);
         // Add any supporting metadata, if needed
         bool use_metadata = requested_annotations & RouteParameters::AnnotationsType::Datasources;
         flatbuffers::Offset<fbresult::Metadata> metadata_buffer;
@@ -529,6 +549,8 @@ class RouteAPI : public BaseAPI
         annotation.add_weight(weight);
         annotation.add_datasources(datasources);
         annotation.add_nodes(nodes_vector);
+        annotation.add_ways(ways_vector);
+        annotation.add_info(info_vector);
         if (use_metadata)
         {
             annotation.add_metadata(metadata_buffer);
@@ -831,6 +853,26 @@ class RouteAPI : public BaseAPI
                         nodes.values.push_back(static_cast<std::uint64_t>(node_id));
                     }
                     annotation.values["nodes"] = std::move(nodes);
+                }
+                if (requested_annotations & RouteParameters::AnnotationsType::Ways)
+                {
+                    util::json::Array ways;
+                    ways.values.reserve(leg_geometry.osm_node_ids.size());
+//                     for (const auto way_id : leg_geometry.osm_way_ids)
+//                     {
+//                         ways.values.push_back(static_cast<std::int64_t>(way_id));
+//                     }
+                    annotation.values["ways"] = std::move(ways);
+                }
+                if (requested_annotations & RouteParameters::AnnotationsType::Info)
+                {
+                    util::json::Array info;
+                    info.values.reserve(leg_geometry.osm_node_ids.size());
+//                     for (const auto way_id : leg_geometry.osm_way_ids)
+//                     {
+//                         ways.values.push_back(static_cast<std::int64_t>(way_id));
+//                     }
+                    annotation.values["info"] = std::move(info);
                 }
                 // Add any supporting metadata, if needed
                 if (requested_annotations & RouteParameters::AnnotationsType::Datasources)
