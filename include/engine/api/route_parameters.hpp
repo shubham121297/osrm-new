@@ -78,7 +78,7 @@ struct RouteParameters : public BaseParameters
         Speed = 0x20,
         Ways = 0x40,
         Info = 0x80,
-        All = Duration | Nodes | Distance | Weight | Datasources | Speed | Ways | info
+        All = Duration | Nodes | Distance | Weight | Datasources | Speed | Ways | Info
     };
 
     RouteParameters() = default;
