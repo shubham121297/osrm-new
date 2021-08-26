@@ -620,7 +620,7 @@ inline flatbuffers::Offset<Annotation> CreateAnnotationDirect(
   auto datasources__ = datasources ? _fbb.CreateVector<uint32_t>(*datasources) : 0;
   auto nodes__ = nodes ? _fbb.CreateVector<uint32_t>(*nodes) : 0;
   auto ways__ = ways ? _fbb.CreateVector<int64_t>(*ways) : 0;
-  auto info__ = info ? _fbb.CreateVector<std::string>(*info) : 0;//could give error.
+  auto info__ = info ? _fbb.CreateVectorOfStrings<std::string>(*info) : 0;//could give error.
   auto weight__ = weight ? _fbb.CreateVector<uint32_t>(*weight) : 0;
   auto speed__ = speed ? _fbb.CreateVector<float>(*speed) : 0;
   return osrm::engine::api::fbresult::CreateAnnotation(
