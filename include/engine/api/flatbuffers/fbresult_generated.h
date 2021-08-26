@@ -499,9 +499,12 @@ struct Annotation FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<int64_t> *ways() const {
     return GetPointer<const flatbuffers::Vector<int64_t> *>(VT_WAYS);
   }
-  const flatbuffers::Vector<std::string> *info() const {
-    return GetPointer<const flatbuffers::Vector<std::string> *>(VT_INFO);
+  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *info() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_INFO);
   }
+//   const flatbuffers::Vector<std::string> *info() const {
+//     return GetPointer<const flatbuffers::Vector<std::string> *>(VT_INFO);
+//   }
   const flatbuffers::Vector<uint32_t> *weight() const {
     return GetPointer<const flatbuffers::Vector<uint32_t> *>(VT_WEIGHT);
   }
@@ -525,6 +528,9 @@ struct Annotation FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVector(ways()) &&
            VerifyOffset(verifier, VT_INFO) &&
            verifier.VerifyVector(info()) &&
+           verifier.VerifyVectorOfStrings(info()) &&
+//            VerifyOffset(verifier, VT_INFO) &&
+//            verifier.VerifyVector(info()) &&
            VerifyOffset(verifier, VT_WEIGHT) &&
            verifier.VerifyVector(weight()) &&
            VerifyOffset(verifier, VT_SPEED) &&
@@ -556,9 +562,12 @@ struct AnnotationBuilder {
   void add_ways(flatbuffers::Offset<flatbuffers::Vector<int64_t>> ways) {
     fbb_.AddOffset(Annotation::VT_WAYS, ways);
   }
-  void add_info(flatbuffers::Offset<flatbuffers::Vector<std::string>> info) {
-    fbb_.AddOffset(Annotation::VT_INFO, info);
+  void add_info(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> info) {
+    fbb_.AddOffset(Intersection::VT_INFO, info);
   }
+//   void add_info(flatbuffers::Offset<flatbuffers::Vector<std::string>> info) {
+//     fbb_.AddOffset(Annotation::VT_INFO, info);
+//   }
   void add_weight(flatbuffers::Offset<flatbuffers::Vector<uint32_t>> weight) {
     fbb_.AddOffset(Annotation::VT_WEIGHT, weight);
   }
@@ -587,7 +596,8 @@ inline flatbuffers::Offset<Annotation> CreateAnnotation(
     flatbuffers::Offset<flatbuffers::Vector<uint32_t>> datasources = 0,
     flatbuffers::Offset<flatbuffers::Vector<uint32_t>> nodes = 0,
     flatbuffers::Offset<flatbuffers::Vector<int64_t>> ways = 0,
-    flatbuffers::Offset<flatbuffers::Vector<std::string>> info = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> info = 0,
+    //flatbuffers::Offset<flatbuffers::Vector<std::string>> info = 0,
     flatbuffers::Offset<flatbuffers::Vector<uint32_t>> weight = 0,
     flatbuffers::Offset<flatbuffers::Vector<float>> speed = 0,
     flatbuffers::Offset<osrm::engine::api::fbresult::Metadata> metadata = 0) {
@@ -611,7 +621,8 @@ inline flatbuffers::Offset<Annotation> CreateAnnotationDirect(
     const std::vector<uint32_t> *datasources = nullptr,
     const std::vector<uint32_t> *nodes = nullptr,
     const std::vector<int64_t> *ways = nullptr,
-    const std::vector<std::string> *info = nullptr,
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *info = nullptr,
+    //const std::vector<std::string> *info = nullptr,
     const std::vector<uint32_t> *weight = nullptr,
     const std::vector<float> *speed = nullptr,
     flatbuffers::Offset<osrm::engine::api::fbresult::Metadata> metadata = 0) {
@@ -620,7 +631,8 @@ inline flatbuffers::Offset<Annotation> CreateAnnotationDirect(
   auto datasources__ = datasources ? _fbb.CreateVector<uint32_t>(*datasources) : 0;
   auto nodes__ = nodes ? _fbb.CreateVector<uint32_t>(*nodes) : 0;
   auto ways__ = ways ? _fbb.CreateVector<int64_t>(*ways) : 0;
-  auto info__ = info ? _fbb.CreateVectorOfStrings<std::string>(*info) : 0;//could give error.
+  auto info__ = info ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*info) : 0;
+  //auto info__ = info ? _fbb.CreateVectorOfStrings<std::string>(*info) : 0;//could give error.
   auto weight__ = weight ? _fbb.CreateVector<uint32_t>(*weight) : 0;
   auto speed__ = speed ? _fbb.CreateVector<float>(*speed) : 0;
   return osrm::engine::api::fbresult::CreateAnnotation(
@@ -2005,7 +2017,8 @@ inline void Annotation::UnPackTo(AnnotationT *_o, const flatbuffers::resolver_fu
   { auto _e = datasources(); if (_e) { _o->datasources.resize(_e->size()); for (flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->datasources[_i] = _e->Get(_i); } } };
   { auto _e = nodes(); if (_e) { _o->nodes.resize(_e->size()); for (flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->nodes[_i] = _e->Get(_i); } } };
   { auto _e = ways(); if (_e) { _o->ways.resize(_e->size()); for (flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->ways[_i] = _e->Get(_i); } } };
-  { auto _e = info(); if (_e) { _o->info.resize(_e->size()); for (flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->info[_i] = _e->Get(_i); } } };//can give error.
+  { auto _e = info(); if (_e) { _o->info.resize(_e->size()); for (flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->info[_i] = _e->Get(_i)->str(); } } };
+  //{ auto _e = info(); if (_e) { _o->info.resize(_e->size()); for (flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->info[_i] = _e->Get(_i); } } };//can give error.
   { auto _e = weight(); if (_e) { _o->weight.resize(_e->size()); for (flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->weight[_i] = _e->Get(_i); } } };
   { auto _e = speed(); if (_e) { _o->speed.resize(_e->size()); for (flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->speed[_i] = _e->Get(_i); } } };
   { auto _e = metadata(); if (_e) _o->metadata = std::unique_ptr<osrm::engine::api::fbresult::MetadataT>(_e->UnPack(_resolver)); };
@@ -2024,7 +2037,8 @@ inline flatbuffers::Offset<Annotation> CreateAnnotation(flatbuffers::FlatBufferB
   auto _datasources = _o->datasources.size() ? _fbb.CreateVector(_o->datasources) : 0;
   auto _nodes = _o->nodes.size() ? _fbb.CreateVector(_o->nodes) : 0;
   auto _ways = _o->ways.size() ? _fbb.CreateVector(_o->ways) : 0;
-  auto _info = _o->info.size() ? _fbb.CreateVectorOfStrings(_o->info) : 0;//error can come.
+  auto _info = _o->info.size() ? _fbb.CreateVectorOfStrings(_o->info) : 0;
+  //auto _info = _o->info.size() ? _fbb.CreateVectorOfStrings(_o->info) : 0;//error can come.
   auto _weight = _o->weight.size() ? _fbb.CreateVector(_o->weight) : 0;
   auto _speed = _o->speed.size() ? _fbb.CreateVector(_o->speed) : 0;
   auto _metadata = _o->metadata ? CreateMetadata(_fbb, _o->metadata.get(), _rehasher) : 0;
