@@ -465,7 +465,7 @@ struct AnnotationT : public flatbuffers::NativeTable {
   std::vector<uint32_t> weight;
   std::vector<float> speed;
   std::vector<int64_t> ways;
-  std::vector<string_t> info;
+  std::vector<std::string_t> info;
   std::unique_ptr<osrm::engine::api::fbresult::MetadataT> metadata;
   AnnotationT() {
   }
