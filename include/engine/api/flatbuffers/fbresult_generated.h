@@ -2024,7 +2024,7 @@ inline flatbuffers::Offset<Annotation> CreateAnnotation(flatbuffers::FlatBufferB
   auto _datasources = _o->datasources.size() ? _fbb.CreateVector(_o->datasources) : 0;
   auto _nodes = _o->nodes.size() ? _fbb.CreateVector(_o->nodes) : 0;
   auto _ways = _o->ways.size() ? _fbb.CreateVector(_o->ways) : 0;
-  auto _info = _o->info.size() ? _fbb.CreateVector(_o->info) : 0;//error can come.
+  auto _info = _o->info.size() ? _fbb.CreateVectorOfStrings(_o->info) : 0;//error can come.
   auto _weight = _o->weight.size() ? _fbb.CreateVector(_o->weight) : 0;
   auto _speed = _o->speed.size() ? _fbb.CreateVector(_o->speed) : 0;
   auto _metadata = _o->metadata ? CreateMetadata(_fbb, _o->metadata.get(), _rehasher) : 0;
