@@ -5,7 +5,6 @@
 #define FLATBUFFERS_GENERATED_FBRESULT_OSRM_ENGINE_API_FBRESULT_H_
 
 #include "flatbuffers/flatbuffers.h"
-#include<string>
 
 namespace osrm {
 namespace engine {
@@ -466,7 +465,7 @@ struct AnnotationT : public flatbuffers::NativeTable {
   std::vector<uint32_t> weight;
   std::vector<float> speed;
   std::vector<int64_t> ways;
-  std::vector<string> info;
+  std::vector<string_t> info;
   std::unique_ptr<osrm::engine::api::fbresult::MetadataT> metadata;
   AnnotationT() {
   }
