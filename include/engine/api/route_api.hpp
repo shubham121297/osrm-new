@@ -516,7 +516,7 @@ class RouteAPI : public BaseAPI
         if (requested_annotations & RouteParameters::AnnotationsType::Info)
         {
             info.reserve(leg_geometry.osm_node_ids.size());
-            for (const auto seg_info : leg_geometry.osm_way_ids)
+            for (const auto seg_info : leg_geometry.osm_node_ids)
             {
                 info.emplace_back("hey");
             }
@@ -868,7 +868,7 @@ class RouteAPI : public BaseAPI
                 {
                     util::json::Array info;
                     info.values.reserve(leg_geometry.osm_node_ids.size());
-                    for (const auto seg_info : leg_geometry.osm_way_ids)
+                    for (const auto seg_info : leg_geometry.osm_node_ids)
                     {
                         info.values.push_back("hi");
                     }
