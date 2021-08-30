@@ -516,9 +516,9 @@ class RouteAPI : public BaseAPI
         if (requested_annotations & RouteParameters::AnnotationsType::Info)
         {
             info.reserve(leg_geometry.osm_node_ids.size());
-            for (const auto seg_info : leg_geometry.osm_node_ids)
+            for ( int i=0;i<leg_geometry.osm_node_ids.size();i++)
             {
-                info.emplace_back("hey");
+                info.push_back("hey");
             }
         }
         auto nodes_vector = fb_result.CreateVector(nodes);
@@ -868,7 +868,7 @@ class RouteAPI : public BaseAPI
                 {
                     util::json::Array info;
                     info.values.reserve(leg_geometry.osm_node_ids.size());
-                    for (const auto seg_info : leg_geometry.osm_node_ids)
+                    for (int i=0;i<leg_geometry.osm_node_ids.size();i++)
                     {
                         info.values.push_back("hi");
                     }
