@@ -516,10 +516,10 @@ class RouteAPI : public BaseAPI
         if (requested_annotations & RouteParameters::AnnotationsType::Info)
         {
             info.reserve(leg_geometry.osm_node_ids.size());
-//             for (const auto way_id : leg_geometry.osm_way_ids)
-//             {
-//                 ways.emplace_back(static_cast<int64_t>(way_id));
-//             }
+            for (const auto seg_info : leg_geometry.osm_way_ids)
+            {
+                info.emplace_back("hey");
+            }
         }
         auto nodes_vector = fb_result.CreateVector(nodes);
         auto ways_vector = fb_result.CreateVector(ways);
@@ -868,10 +868,10 @@ class RouteAPI : public BaseAPI
                 {
                     util::json::Array info;
                     info.values.reserve(leg_geometry.osm_node_ids.size());
-//                     for (const auto way_id : leg_geometry.osm_way_ids)
-//                     {
-//                         ways.values.push_back(static_cast<std::int64_t>(way_id));
-//                     }
+                    for (const auto seg_info : leg_geometry.osm_way_ids)
+                    {
+                        info.values.push_back("hi");
+                    }
                     annotation.values["info"] = std::move(info);
                 }
                 // Add any supporting metadata, if needed
