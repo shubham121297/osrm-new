@@ -563,7 +563,7 @@ struct AnnotationBuilder {
     fbb_.AddOffset(Annotation::VT_WAYS, ways);
   }
   void add_info(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> info) {
-    fbb_.AddOffset(Intersection::VT_INFO, info);
+    fbb_.AddOffset(Annotation::VT_INFO, info);
   }
 //   void add_info(flatbuffers::Offset<flatbuffers::Vector<std::string>> info) {
 //     fbb_.AddOffset(Annotation::VT_INFO, info);
