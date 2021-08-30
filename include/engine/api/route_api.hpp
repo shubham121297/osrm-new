@@ -504,7 +504,7 @@ class RouteAPI : public BaseAPI
             }
         }
         std::vector<int64_t> ways;
-        std::vector<std::string>info;
+        std::vector<flatbuffers::Offset<flatbuffers::String>> info;
         if (requested_annotations & RouteParameters::AnnotationsType::Ways)
         {
             ways.reserve(leg_geometry.osm_node_ids.size());
